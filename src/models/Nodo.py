@@ -1,4 +1,7 @@
+from models import Nodo
+
+
 class Nodo:
-    def __init__(self, value=None):
-        self.value = value
-        self.up = self.right = self.down = self.left = None
+    def __init__(self, next: Nodo, data):
+        self.next = next
+        self.data = data
