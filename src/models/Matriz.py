@@ -21,14 +21,17 @@ class Matriz:
             self.row_list.add_to_end(row)
             count_rows = count_rows + 1
 
+    # Insertar en un indice
     def insert(self, x: int, y: int, data):
         row = self.row_list.get_by_index(y)
         row.set_by_index(x, data)
 
+    # Obtener un indice
     def get(self, x: int, y: int):
         row = self.row_list.get_by_index(y)
         return row.get_by_index(x)
 
+    # Imprimir matriz
     def print_matrix(self):
         count = 0
         print(self.name)
