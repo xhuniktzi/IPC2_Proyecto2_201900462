@@ -1,24 +1,10 @@
 from tkinter import Tk, Menu, Toplevel, Label, Button
 from tkinter.ttk import Combobox
 from tkinter.filedialog import askopenfilename
-from models import ListaEnlazada, Matriz
 from xml.etree import ElementTree as ET
-
-window = Tk()
-menu_bar = Menu(window)
-
-data = ListaEnlazada()
-
-
-# Aux: buscar matriz por nombre
-def search_matrix(name: str):
-    count = 0
-    while count < data.get_size():
-        if data.get_by_index(count).name == name:
-            return data.get_by_index(count)
-        count = count + 1
-
-    return None
+from models import ListaEnlazada, Matriz
+from helpers import define_geometry, search_matrix
+from config import *
 
 
 def load_file():
@@ -57,13 +43,8 @@ def invoke_rotate_h():
         search_matrix(select_matrix.get()).rotate_horizontal().print_matrix()
 
     rotate_h_window = Toplevel(window)
-    current_matrix = None
 
-    width = 500
-    height = 50
-    x_win = rotate_h_window.winfo_screenwidth() // 2 - width // 2
-    y_win = rotate_h_window.winfo_screenheight() // 2 - height // 2
-    data_geometry = '{}x{}+{}+{}'.format(width, height, x_win, y_win)
+    data_geometry = define_geometry(rotate_h_window, 500, 50)
     rotate_h_window.geometry(data_geometry)
 
     rotate_h_window.resizable(0, 0)
@@ -100,11 +81,7 @@ def invoke_rotate_h():
 if __name__ == '__main__':
     window.config(menu=menu_bar)
 
-    width = 900
-    height = 500
-    x_win = window.winfo_screenwidth() // 2 - width // 2
-    y_win = window.winfo_screenheight() // 2 - height // 2
-    data_geometry = '{}x{}+{}+{}'.format(width, height, x_win, y_win)
+    data_geometry = define_geometry(window, 900, 500)
     window.geometry(data_geometry)
 
     window.resizable(0, 0)
