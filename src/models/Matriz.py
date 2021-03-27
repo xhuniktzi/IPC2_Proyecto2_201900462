@@ -40,3 +40,19 @@ class Matriz:
             self.row_list.get_by_index(count).print_list()
             count = count + 1
         print()
+
+    # Funciones de transformación unitaria
+
+    # Rotar horizontalmente
+    def rotate_horizontal(self):
+        rotate_matrix = Matriz(self.name, self.m, self.n)
+        count_y = 0
+        aux_count_y = self.n - 1
+        while count_y < self.n:
+            act_row = self.row_list.get_by_index(count_y)
+            rotate_matrix.row_list.set_by_index(aux_count_y, act_row)
+            # print('{} -> {}'.format(count_y, aux_count_y))
+            count_y = count_y + 1
+            aux_count_y = aux_count_y - 1
+
+        return rotate_matrix
