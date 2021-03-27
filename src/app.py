@@ -72,6 +72,41 @@ def invoke_rotate_h():
     submit_button.grid(row=0, column=2, padx=5, pady=5)
 
 
+def invoke_rotate_v():
+    def execute_cmd():
+        search_matrix(select_matrix.get()).print_matrix()
+        search_matrix(select_matrix.get()).rotate_vertical().print_matrix()
+
+    rotate_v_window = Toplevel(window)
+
+    data_geometry = define_geometry(rotate_v_window, 500, 50)
+    rotate_v_window.geometry(data_geometry)
+
+    rotate_v_window.resizable(0, 0)
+    rotate_v_window.title('Rotar Vertical')
+
+    select_matrix_label = Label(rotate_v_window,
+                                text='Selecciona una matriz: ')
+
+    select_matrix_label.grid(row=0, column=0, padx=5, pady=5)
+
+    list_matrix = list()
+    count = 0
+    while count < data.get_size():
+        list_matrix.append(data.get_by_index(count).name)
+        count = count + 1
+
+    select_matrix = Combobox(rotate_v_window, width=24, state='readonly')
+    select_matrix.grid(row=0, column=1, padx=5, pady=5)
+    select_matrix['values'] = list_matrix
+
+    submit_button = Button(rotate_v_window,
+                           text="Rotar Verticalmente",
+                           command=execute_cmd)
+
+    submit_button.grid(row=0, column=2, padx=5, pady=5)
+
+
 # def insert_dynamic():
 #     info = StringVar()
 #     label_test = Label(window, textvariable=info)
@@ -92,7 +127,8 @@ if __name__ == '__main__':
     op_unit_menu = Menu(menu_bar, tearoff=0)
     op_unit_menu.add_command(label='Rotar horizontalmente...',
                              command=invoke_rotate_h)
-    op_unit_menu.add_command(label='Rotar verticalmente...')
+    op_unit_menu.add_command(label='Rotar verticalmente...',
+                             command=invoke_rotate_v)
     op_unit_menu.add_command(label='Transponer imagen...')
     op_unit_menu.add_command(label='Limpiar zona de una imagen...')
     op_unit_menu.add_command(label='Agregar linea horizontal...')

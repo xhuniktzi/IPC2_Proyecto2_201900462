@@ -25,6 +25,14 @@ class Matriz:
     def get_row(self, y: int):
         return self.row_list.get_by_index(y)
 
+    # Insertar fila
+    def set_row(self, y: int, row: ListaEnlazada):
+        act_row = self.get_row(y)
+        count = 0
+        while count < self.m:
+            act_row.set_by_index(count, row.get_by_index(count))
+            count = count + 1
+
     # Insertar en un indice
     def insert(self, x: int, y: int, data):
         row = self.get_row(y)
@@ -54,6 +62,14 @@ class Matriz:
             count = count + 1
         return column
 
+    # Insertar columna
+    def set_column(self, x: int, column: ListaEnlazada):
+        count = 0
+        while count < self.n:
+            value = column.get_by_index(count)
+            self.insert(x, count, value)
+            count = count + 1
+
     # Rotar horizontalmente
     def rotate_horizontal(self):
         rotate_matrix = Matriz(self.name, self.m, self.n)
@@ -61,16 +77,20 @@ class Matriz:
         aux_count_y = self.n - 1
         while count_y < self.n:
             act_row = self.get_row(count_y)
-            rotate_matrix.row_list.set_by_index(aux_count_y, act_row)
+            rotate_matrix.set_row(aux_count_y, act_row)
             count_y = count_y + 1
             aux_count_y = aux_count_y - 1
         return rotate_matrix
 
+    # Rotar vertical
     def rotate_vertical(self):
         rotate_matrix = Matriz(self.name, self.m, self.n)
         count_x = 0
         aux_count_x = self.m - 1
         while count_x < self.m:
-            print('{} -> {}'.format(count_x, aux_count_x))
+            act_column = self.get_column(count_x)
+            rotate_matrix.set_column(aux_count_x, act_column)
             count_x = count_x + 1
             aux_count_x = aux_count_x - 1
+
+        return rotate_matrix
