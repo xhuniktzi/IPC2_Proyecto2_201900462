@@ -32,7 +32,7 @@ def intersec_matrix(matrix_1: Matriz, matrix_2: Matriz):
         # Handle error
         print('Size Error')
     else:
-        name_matrix = '{}Union{}'.format(matrix_1.name, matrix_2.name)
+        name_matrix = '{}Intersec{}'.format(matrix_1.name, matrix_2.name)
         x_size = matrix_1.m
         y_size = matrix_2.n
 

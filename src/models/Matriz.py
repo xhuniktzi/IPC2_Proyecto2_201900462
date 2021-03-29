@@ -47,6 +47,7 @@ class Matriz:
     def print_matrix(self):
         count = 0
         print(self.name)
+        print('{}x{}'.format(self.m, self.n))
         size = self.row_list.get_size()
         while size > count:
             self.get_row(count).print_list()
@@ -97,4 +98,14 @@ class Matriz:
 
     # Transponer imagen
     def transpose(self):
-        return self.rotate_vertical().rotate_horizontal()
+        transpose_matrix = Matriz(self.name, self.n, self.m)
+        count_x = 0
+        while count_x < self.m:
+            count_y = 0
+            while count_y < self.n:
+                value = self.get(count_x, count_y)
+                transpose_matrix.insert(count_y, count_x, value)
+                count_y = count_y + 1
+            count_x = count_x + 1
+
+        return transpose_matrix
