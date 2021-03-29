@@ -94,3 +94,7 @@ class Matriz:
             aux_count_x = aux_count_x - 1
 
         return rotate_matrix
+
+    # Transponer imagen
+    def transpose(self):
+        return self.rotate_vertical().rotate_horizontal()

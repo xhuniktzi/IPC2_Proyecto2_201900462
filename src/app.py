@@ -5,6 +5,7 @@ from xml.etree import ElementTree as ET
 from models import ListaEnlazada, Matriz
 from helpers import define_geometry, search_matrix
 from config import *
+from binary_ops import union_matrix
 
 
 def load_file():
@@ -107,11 +108,50 @@ def invoke_rotate_v():
     submit_button.grid(row=0, column=2, padx=5, pady=5)
 
 
-# def insert_dynamic():
-#     info = StringVar()
-#     label_test = Label(window, textvariable=info)
-#     info.set('Información')
-#     label_test.pack()
+def invoke_transpose():
+    def execute_cmd():
+        search_matrix(select_matrix.get()).print_matrix()
+        search_matrix(select_matrix.get()).transpose().print_matrix()
+
+    transpose_window = Toplevel(window)
+
+    data_geometry = define_geometry(transpose_window, 500, 50)
+    transpose_window.geometry(data_geometry)
+
+    transpose_window.resizable(0, 0)
+    transpose_window.title('Transponer Imagen')
+
+    select_matrix_label = Label(transpose_window,
+                                text='Selecciona una matriz: ')
+
+    select_matrix_label.grid(row=0, column=0, padx=5, pady=5)
+
+    list_matrix = list()
+    count = 0
+    while count < data.get_size():
+        list_matrix.append(data.get_by_index(count).name)
+        count = count + 1
+
+    select_matrix = Combobox(transpose_window, width=24, state='readonly')
+    select_matrix.grid(row=0, column=1, padx=5, pady=5)
+    select_matrix['values'] = list_matrix
+
+    submit_button = Button(transpose_window,
+                           text="Transponer",
+                           command=execute_cmd)
+
+    submit_button.grid(row=0, column=2, padx=5, pady=5)
+
+
+def testing_union():
+    matrix_2 = search_matrix('M2')
+    matrix_5 = search_matrix('M5')
+
+    matrix_2.print_matrix()
+    matrix_5.print_matrix()
+
+    union_matrix(matrix_5, matrix_2).print_matrix()
+
 
 if __name__ == '__main__':
     window.config(menu=menu_bar)
@@ -129,7 +169,8 @@ if __name__ == '__main__':
                              command=invoke_rotate_h)
     op_unit_menu.add_command(label='Rotar verticalmente...',
                              command=invoke_rotate_v)
-    op_unit_menu.add_command(label='Transponer imagen...')
+    op_unit_menu.add_command(label='Transponer imagen...',
+                             command=invoke_transpose)
     op_unit_menu.add_command(label='Limpiar zona de una imagen...')
     op_unit_menu.add_command(label='Agregar linea horizontal...')
     op_unit_menu.add_command(label='Agregar linea vertical...')
@@ -138,7 +179,7 @@ if __name__ == '__main__':
     menu_bar.add_cascade(label='Operaciones unitarias', menu=op_unit_menu)
 
     op_bin_menu = Menu(menu_bar, tearoff=0)
-    op_bin_menu.add_command(label='Union...')
+    op_bin_menu.add_command(label='Union...', command=testing_union)
     op_bin_menu.add_command(label='Intersección...')
     op_bin_menu.add_command(label='Diferencia...')
     op_bin_menu.add_command(label='Diferencia simétrica...')
