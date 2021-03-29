@@ -5,7 +5,7 @@ from xml.etree import ElementTree as ET
 from models import ListaEnlazada, Matriz
 from helpers import define_geometry, search_matrix
 from config import *
-from binary_ops import union_matrix
+from binary_ops import union_matrix, intersec_matrix
 
 
 def load_file():
@@ -153,6 +153,16 @@ def testing_union():
     union_matrix(matrix_5, matrix_2).print_matrix()
 
 
+def testing_intersec():
+    matrix_2 = search_matrix('M2')
+    matrix_5 = search_matrix('M5')
+
+    matrix_2.print_matrix()
+    matrix_5.print_matrix()
+
+    intersec_matrix(matrix_5, matrix_2).print_matrix()
+
+
 if __name__ == '__main__':
     window.config(menu=menu_bar)
 
@@ -180,7 +190,7 @@ if __name__ == '__main__':
 
     op_bin_menu = Menu(menu_bar, tearoff=0)
     op_bin_menu.add_command(label='Union...', command=testing_union)
-    op_bin_menu.add_command(label='Intersección...')
+    op_bin_menu.add_command(label='Intersección...', command=testing_intersec)
     op_bin_menu.add_command(label='Diferencia...')
     op_bin_menu.add_command(label='Diferencia simétrica...')
     menu_bar.add_cascade(label='Operaciones binarias', menu=op_bin_menu)
