@@ -1,9 +1,10 @@
 from tkinter import Tk, Menu, Toplevel, Label, Button
 from tkinter.ttk import Combobox
 from tkinter.filedialog import askopenfilename
+from tkinter.messagebox import showinfo
 from xml.etree import ElementTree as ET
 from models import ListaEnlazada, Matriz
-from helpers import define_geometry, search_matrix
+from helpers import define_geometry, search_matrix, clear_frames
 from config import *
 from binary_ops import union_matrix, intersec_matrix
 
@@ -40,8 +41,38 @@ def load_file():
 
 def invoke_rotate_h():
     def execute_cmd():
-        search_matrix(select_matrix.get()).print_matrix()
-        search_matrix(select_matrix.get()).rotate_horizontal().print_matrix()
+        clear_frames()
+        matrix_input = search_matrix(select_matrix.get())
+        count_x = 0
+        while count_x < matrix_input.m:
+            count_y = 0
+            while count_y < matrix_input.n:
+                if matrix_input.get(count_x, count_y) == '*':
+                    any_label = Label(input_matrix_1, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(input_matrix_1, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
+
+        matrix_output = matrix_input.rotate_horizontal()
+        count_x = 0
+        while count_x < matrix_output.m:
+            count_y = 0
+            while count_y < matrix_output.n:
+                if matrix_output.get(count_x, count_y) == '*':
+                    any_label = Label(output_matrix, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(output_matrix, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
 
     rotate_h_window = Toplevel(window)
 
@@ -75,8 +106,38 @@ def invoke_rotate_h():
 
 def invoke_rotate_v():
     def execute_cmd():
-        search_matrix(select_matrix.get()).print_matrix()
-        search_matrix(select_matrix.get()).rotate_vertical().print_matrix()
+        clear_frames()
+        matrix_input = search_matrix(select_matrix.get())
+        count_x = 0
+        while count_x < matrix_input.m:
+            count_y = 0
+            while count_y < matrix_input.n:
+                if matrix_input.get(count_x, count_y) == '*':
+                    any_label = Label(input_matrix_1, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(input_matrix_1, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
+
+        matrix_output = matrix_input.rotate_vertical()
+        count_x = 0
+        while count_x < matrix_output.m:
+            count_y = 0
+            while count_y < matrix_output.n:
+                if matrix_output.get(count_x, count_y) == '*':
+                    any_label = Label(output_matrix, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(output_matrix, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
 
     rotate_v_window = Toplevel(window)
 
@@ -110,8 +171,38 @@ def invoke_rotate_v():
 
 def invoke_transpose():
     def execute_cmd():
-        search_matrix(select_matrix.get()).print_matrix()
-        search_matrix(select_matrix.get()).transpose().print_matrix()
+        clear_frames()
+        matrix_input = search_matrix(select_matrix.get())
+        count_x = 0
+        while count_x < matrix_input.m:
+            count_y = 0
+            while count_y < matrix_input.n:
+                if matrix_input.get(count_x, count_y) == '*':
+                    any_label = Label(input_matrix_1, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(input_matrix_1, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
+
+        matrix_output = matrix_input.transpose()
+        count_x = 0
+        while count_x < matrix_output.m:
+            count_y = 0
+            while count_y < matrix_output.n:
+                if matrix_output.get(count_x, count_y) == '*':
+                    any_label = Label(output_matrix, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(output_matrix, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
 
     transpose_window = Toplevel(window)
 
@@ -143,24 +234,181 @@ def invoke_transpose():
     submit_button.grid(row=0, column=2, padx=5, pady=5)
 
 
-def testing_union():
-    matrix_2 = search_matrix('M2')
-    matrix_5 = search_matrix('M5')
+def invoke_union():
+    def execute_cmd():
+        clear_frames()
+        matrix_input_1 = search_matrix(select_matrix_1.get())
+        count_x = 0
+        while count_x < matrix_input_1.m:
+            count_y = 0
+            while count_y < matrix_input_1.n:
+                if matrix_input_1.get(count_x, count_y) == '*':
+                    any_label = Label(input_matrix_1, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(input_matrix_1, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
 
-    matrix_2.print_matrix()
-    matrix_5.print_matrix()
+        matrix_input_2 = search_matrix(select_matrix_2.get())
+        count_x = 0
+        while count_x < matrix_input_2.m:
+            count_y = 0
+            while count_y < matrix_input_2.n:
+                if matrix_input_2.get(count_x, count_y) == '*':
+                    any_label = Label(input_matrix_2, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(input_matrix_2, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
 
-    union_matrix(matrix_5, matrix_2).print_matrix()
+        matrix_output = union_matrix(matrix_input_1, matrix_input_2)
+        count_x = 0
+        while count_x < matrix_output.m:
+            count_y = 0
+            while count_y < matrix_output.n:
+                if matrix_output.get(count_x, count_y) == '*':
+                    any_label = Label(output_matrix, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(output_matrix, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
+
+    union_window = Toplevel(window)
+
+    data_geometry = define_geometry(union_window, 500, 100)
+    union_window.geometry(data_geometry)
+
+    union_window.resizable(0, 0)
+    union_window.title('Unir Imágenes')
+
+    select_matrix_1_label = Label(union_window, text='Selecciona una matriz: ')
+    select_matrix_1_label.grid(row=0, column=0, padx=5, pady=5)
+
+    list_matrix = list()
+    count = 0
+    while count < data.get_size():
+        list_matrix.append(data.get_by_index(count).name)
+        count = count + 1
+
+    select_matrix_1 = Combobox(union_window, width=24, state='readonly')
+    select_matrix_1.grid(row=0, column=1, padx=5, pady=5)
+    select_matrix_1['values'] = list_matrix
+
+    select_matrix_2_label = Label(union_window, text='Selecciona una matriz: ')
+    select_matrix_2_label.grid(row=1, column=0, padx=5, pady=5)
+
+    select_matrix_2 = Combobox(union_window, width=24, state='readonly')
+    select_matrix_2.grid(row=1, column=1, padx=5, pady=5)
+    select_matrix_2['values'] = list_matrix
+
+    submit_button = Button(union_window, text="Union", command=execute_cmd)
+
+    submit_button.grid(row=1, column=2, padx=5, pady=5)
 
 
-def testing_intersec():
-    matrix_2 = search_matrix('M2')
-    matrix_5 = search_matrix('M5')
+def invoke_intersec():
+    def execute_cmd():
+        clear_frames()
+        matrix_input_1 = search_matrix(select_matrix_1.get())
+        count_x = 0
+        while count_x < matrix_input_1.m:
+            count_y = 0
+            while count_y < matrix_input_1.n:
+                if matrix_input_1.get(count_x, count_y) == '*':
+                    any_label = Label(input_matrix_1, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(input_matrix_1, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
 
-    matrix_2.print_matrix()
-    matrix_5.print_matrix()
+        matrix_input_2 = search_matrix(select_matrix_2.get())
+        count_x = 0
+        while count_x < matrix_input_2.m:
+            count_y = 0
+            while count_y < matrix_input_2.n:
+                if matrix_input_2.get(count_x, count_y) == '*':
+                    any_label = Label(input_matrix_2, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(input_matrix_2, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
 
-    intersec_matrix(matrix_5, matrix_2).print_matrix()
+        matrix_output = intersec_matrix(matrix_input_1, matrix_input_2)
+        count_x = 0
+        while count_x < matrix_output.m:
+            count_y = 0
+            while count_y < matrix_output.n:
+                if matrix_output.get(count_x, count_y) == '*':
+                    any_label = Label(output_matrix, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(output_matrix, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
+
+    intersec_window = Toplevel(window)
+
+    data_geometry = define_geometry(intersec_window, 500, 100)
+    intersec_window.geometry(data_geometry)
+
+    intersec_window.resizable(0, 0)
+    intersec_window.title('Intersección de Imágenes')
+
+    select_matrix_1_label = Label(intersec_window,
+                                  text='Selecciona una matriz: ')
+    select_matrix_1_label.grid(row=0, column=0, padx=5, pady=5)
+
+    list_matrix = list()
+    count = 0
+    while count < data.get_size():
+        list_matrix.append(data.get_by_index(count).name)
+        count = count + 1
+
+    select_matrix_1 = Combobox(intersec_window, width=24, state='readonly')
+    select_matrix_1.grid(row=0, column=1, padx=5, pady=5)
+    select_matrix_1['values'] = list_matrix
+
+    select_matrix_2_label = Label(intersec_window,
+                                  text='Selecciona una matriz: ')
+    select_matrix_2_label.grid(row=1, column=0, padx=5, pady=5)
+
+    select_matrix_2 = Combobox(intersec_window, width=24, state='readonly')
+    select_matrix_2.grid(row=1, column=1, padx=5, pady=5)
+    select_matrix_2['values'] = list_matrix
+
+    submit_button = Button(intersec_window,
+                           text="Intersección",
+                           command=execute_cmd)
+
+    submit_button.grid(row=1, column=2, padx=5, pady=5)
+
+
+def about_author():
+    message_str = 'Xhunik Nikol Miguel Mutzutz \n 201900462'
+    showinfo(window, message=message_str)
 
 
 if __name__ == '__main__':
@@ -169,7 +417,6 @@ if __name__ == '__main__':
     data_geometry = define_geometry(window, 900, 500)
     window.geometry(data_geometry)
 
-    window.resizable(0, 0)
     window.title('Proyecto 2 - IPC2')
 
     menu_bar.add_command(label='Cargar Archivo', command=load_file)
@@ -189,8 +436,8 @@ if __name__ == '__main__':
     menu_bar.add_cascade(label='Operaciones unitarias', menu=op_unit_menu)
 
     op_bin_menu = Menu(menu_bar, tearoff=0)
-    op_bin_menu.add_command(label='Union...', command=testing_union)
-    op_bin_menu.add_command(label='Intersección...', command=testing_intersec)
+    op_bin_menu.add_command(label='Union...', command=invoke_union)
+    op_bin_menu.add_command(label='Intersección...', command=invoke_intersec)
     op_bin_menu.add_command(label='Diferencia...')
     op_bin_menu.add_command(label='Diferencia simétrica...')
     menu_bar.add_cascade(label='Operaciones binarias', menu=op_bin_menu)
@@ -198,7 +445,7 @@ if __name__ == '__main__':
     menu_bar.add_command(label='Reportes')
 
     help_menu = Menu(menu_bar, tearoff=0)
-    help_menu.add_command(label='Acerca del autor...')
+    help_menu.add_command(label='Acerca del autor...', command=about_author)
     help_menu.add_command(label='Acerca del programa...')
     menu_bar.add_cascade(label='Ayuda', menu=help_menu)
 
