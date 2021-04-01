@@ -4,6 +4,8 @@ from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo, showerror
 from xml.etree import ElementTree as ET
 from datetime import datetime
+from jinja2 import Environment, select_autoescape, PackageLoader
+from os import startfile
 from models import ListaEnlazada, Matriz
 from helpers import define_geometry, search_matrix, clear_frames
 from config import *
@@ -46,7 +48,7 @@ def load_file():
 
         log_str = '{} - {} - Espacios llenos: {} - Espacios en blanco: {}'.format(
             datetime.now(), name, black_cells, white_cells)
-        log_entrys.append(log_str)
+        reports.append(log_str)
         data.add_to_end(new_matrix)
 
 
@@ -87,7 +89,7 @@ def invoke_rotate_h():
 
         log_str = '{} - Rotación Horizontal - Matriz: {}'.format(
             datetime.now(), matrix_input.name)
-        log_entrys.append(log_str)
+        reports.append(log_str)
 
     rotate_h_window = Toplevel(window)
 
@@ -156,7 +158,7 @@ def invoke_rotate_v():
 
         log_str = '{} - Rotación Vertical - Matriz: {}'.format(
             datetime.now(), matrix_input.name)
-        log_entrys.append(log_str)
+        reports.append(log_str)
 
     rotate_v_window = Toplevel(window)
 
@@ -225,7 +227,7 @@ def invoke_transpose():
 
         log_str = '{} - Transposición - Matriz: {}'.format(
             datetime.now(), matrix_input.name)
-        log_entrys.append(log_str)
+        reports.append(log_str)
 
     transpose_window = Toplevel(window)
 
@@ -297,7 +299,7 @@ def invoke_union():
         if matrix_output is None:
             log_str = '{} - Error: Matrices de tamaños distintos, Union - {} y {}'.format(
                 datetime.now(), matrix_input_1.name, matrix_input_2.name)
-            log_entrys.append(log_str)
+            reports.append(log_str)
             message_str = 'Las matrices deben ser del mismo tamaño'
             showerror(union_window, message=message_str)
             return
@@ -319,7 +321,7 @@ def invoke_union():
 
         log_str = '{} - Union - Matrices: {} y {}'.format(
             datetime.now(), matrix_input_1.name, matrix_input_2.name)
-        log_entrys.append(log_str)
+        reports.append(log_str)
 
     union_window = Toplevel(window)
 
@@ -394,7 +396,7 @@ def invoke_intersec():
         if matrix_output is None:
             log_str = '{} - Error: Matrices de tamaños distintos, Intersección - {} y {}'.format(
                 datetime.now(), matrix_input_1.name, matrix_input_2.name)
-            log_entrys.append(log_str)
+            reports.append(log_str)
             message_str = 'Las matrices deben ser del mismo tamaño'
             showerror(intersec_window, message=message_str)
             return
@@ -416,7 +418,7 @@ def invoke_intersec():
 
         log_str = '{} - Intersección - Matrices: {} y {}'.format(
             datetime.now(), matrix_input_1.name, matrix_input_2.name)
-        log_entrys.append(log_str)
+        reports.append(log_str)
 
     intersec_window = Toplevel(window)
 
@@ -455,6 +457,21 @@ def invoke_intersec():
     submit_button.grid(row=1, column=2, padx=5, pady=5)
 
 
+def print_reports():
+    env = Environment(loader=PackageLoader('app', 'templates'),
+                      autoescape=select_autoescape(['html']))
+    template = env.get_template('reports.html')
+
+    html_url = '{}{}{}_html_report.html'.format(datetime.now().day,
+                                                datetime.now().month,
+                                                datetime.now().year)
+    html_file = open(html_url, 'w+')
+    html_file.write(template.render(reports=reports))
+    html_file.close()
+
+    startfile(html_url)
+
+
 def about_author():
     message_str = 'Xhunik Nikol Miguel Mutzutz \n 201900462'
     showinfo(window, message=message_str)
@@ -491,7 +508,7 @@ if __name__ == '__main__':
     op_bin_menu.add_command(label='Diferencia simétrica...')
     menu_bar.add_cascade(label='Operaciones binarias', menu=op_bin_menu)
 
-    menu_bar.add_command(label='Reportes', command=lambda: print(log_entrys))
+    menu_bar.add_command(label='Reportes', command=print_reports)
 
     help_menu = Menu(menu_bar, tearoff=0)
     help_menu.add_command(label='Acerca del autor...', command=about_author)
