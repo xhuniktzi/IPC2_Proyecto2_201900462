@@ -27,7 +27,3 @@ def clear_frames():
 
     for widget in output_matrix.winfo_children():
         widget.destroy()
-
-    # input_matrix_1.destroy()
-    # input_matrix_2.destroy()
-    # output_matrix.destroy()

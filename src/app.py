@@ -1,8 +1,9 @@
 from tkinter import Tk, Menu, Toplevel, Label, Button
 from tkinter.ttk import Combobox
 from tkinter.filedialog import askopenfilename
-from tkinter.messagebox import showinfo
+from tkinter.messagebox import showinfo, showerror
 from xml.etree import ElementTree as ET
+from datetime import datetime
 from models import ListaEnlazada, Matriz
 from helpers import define_geometry, search_matrix, clear_frames
 from config import *
@@ -27,15 +28,25 @@ def load_file():
         new_matrix = Matriz(name, x_size, y_size)
         info_matrix = parse_image(matrix.find('imagen').text)
 
+        white_cells = 0
+        black_cells = 0
+
         y_count = 0
         while y_count < new_matrix.n:
             x_count = 0
             while x_count < new_matrix.m:
                 value = info_matrix[y_count][x_count]
                 new_matrix.insert(x_count, y_count, value)
+                if value == '*':
+                    black_cells = black_cells + 1
+                else:
+                    white_cells = white_cells + 1
                 x_count = x_count + 1
             y_count = y_count + 1
 
+        log_str = '{} - {} - Espacios llenos: {} - Espacios en blanco: {}'.format(
+            datetime.now(), name, black_cells, white_cells)
+        log_entrys.append(log_str)
         data.add_to_end(new_matrix)
 
 
@@ -73,6 +84,10 @@ def invoke_rotate_h():
                     any_label.grid(column=count_x, row=count_y)
                 count_y = count_y + 1
             count_x = count_x + 1
+
+        log_str = '{} - Rotación Horizontal - Matriz: {}'.format(
+            datetime.now(), matrix_input.name)
+        log_entrys.append(log_str)
 
     rotate_h_window = Toplevel(window)
 
@@ -139,6 +154,10 @@ def invoke_rotate_v():
                 count_y = count_y + 1
             count_x = count_x + 1
 
+        log_str = '{} - Rotación Vertical - Matriz: {}'.format(
+            datetime.now(), matrix_input.name)
+        log_entrys.append(log_str)
+
     rotate_v_window = Toplevel(window)
 
     data_geometry = define_geometry(rotate_v_window, 500, 50)
@@ -203,6 +222,10 @@ def invoke_transpose():
                     any_label.grid(column=count_x, row=count_y)
                 count_y = count_y + 1
             count_x = count_x + 1
+
+        log_str = '{} - Transposición - Matriz: {}'.format(
+            datetime.now(), matrix_input.name)
+        log_entrys.append(log_str)
 
     transpose_window = Toplevel(window)
 
@@ -270,6 +293,15 @@ def invoke_union():
             count_x = count_x + 1
 
         matrix_output = union_matrix(matrix_input_1, matrix_input_2)
+
+        if matrix_output is None:
+            log_str = '{} - Error: Matrices de tamaños distintos, Union - {} y {}'.format(
+                datetime.now(), matrix_input_1.name, matrix_input_2.name)
+            log_entrys.append(log_str)
+            message_str = 'Las matrices deben ser del mismo tamaño'
+            showerror(union_window, message=message_str)
+            return
+
         count_x = 0
         while count_x < matrix_output.m:
             count_y = 0
@@ -284,6 +316,10 @@ def invoke_union():
                     any_label.grid(column=count_x, row=count_y)
                 count_y = count_y + 1
             count_x = count_x + 1
+
+        log_str = '{} - Union - Matrices: {} y {}'.format(
+            datetime.now(), matrix_input_1.name, matrix_input_2.name)
+        log_entrys.append(log_str)
 
     union_window = Toplevel(window)
 
@@ -354,6 +390,15 @@ def invoke_intersec():
             count_x = count_x + 1
 
         matrix_output = intersec_matrix(matrix_input_1, matrix_input_2)
+
+        if matrix_output is None:
+            log_str = '{} - Error: Matrices de tamaños distintos, Intersección - {} y {}'.format(
+                datetime.now(), matrix_input_1.name, matrix_input_2.name)
+            log_entrys.append(log_str)
+            message_str = 'Las matrices deben ser del mismo tamaño'
+            showerror(intersec_window, message=message_str)
+            return
+
         count_x = 0
         while count_x < matrix_output.m:
             count_y = 0
@@ -368,6 +413,10 @@ def invoke_intersec():
                     any_label.grid(column=count_x, row=count_y)
                 count_y = count_y + 1
             count_x = count_x + 1
+
+        log_str = '{} - Intersección - Matrices: {} y {}'.format(
+            datetime.now(), matrix_input_1.name, matrix_input_2.name)
+        log_entrys.append(log_str)
 
     intersec_window = Toplevel(window)
 
@@ -442,7 +491,7 @@ if __name__ == '__main__':
     op_bin_menu.add_command(label='Diferencia simétrica...')
     menu_bar.add_cascade(label='Operaciones binarias', menu=op_bin_menu)
 
-    menu_bar.add_command(label='Reportes')
+    menu_bar.add_command(label='Reportes', command=lambda: print(log_entrys))
 
     help_menu = Menu(menu_bar, tearoff=0)
     help_menu.add_command(label='Acerca del autor...', command=about_author)
