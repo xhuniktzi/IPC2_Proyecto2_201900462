@@ -54,6 +54,17 @@ class Matriz:
             count = count + 1
         print()
 
+    # Definir Matriz
+    def define(self, matrix: Matriz):
+        count_x = 0
+        while count_x < self.m:
+            count_y = 0
+            while count_y < self.n:
+                value = matrix.get(count_x, count_y)
+                self.insert(count_x, count_y, value)
+                count_y = count_y + 1
+            count_x = count_x + 1
+
     # Obtener columna
     def get_column(self, x: int):
         count = 0

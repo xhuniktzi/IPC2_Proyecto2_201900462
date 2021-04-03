@@ -1,0 +1,2 @@
+class MatrixSizeException(Exception):
+    pass

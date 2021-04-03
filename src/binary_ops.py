@@ -1,9 +1,11 @@
 from models import Matriz
+from Excepts import MatrixSizeException
 
 
 def union_matrix(matrix_1: Matriz, matrix_2: Matriz):
     if (matrix_1.m != matrix_2.m) or (matrix_1.n != matrix_2.n):
-        return None
+        raise MatrixSizeException
+        # return None
 
     name_matrix = '{}Union{}'.format(matrix_1.name, matrix_2.name)
     x_size = matrix_1.m
@@ -28,7 +30,8 @@ def union_matrix(matrix_1: Matriz, matrix_2: Matriz):
 
 def intersec_matrix(matrix_1: Matriz, matrix_2: Matriz):
     if (matrix_1.m != matrix_2.m) or (matrix_1.n != matrix_2.n):
-        return None
+        raise MatrixSizeException
+        # return None
 
     name_matrix = '{}Intersec{}'.format(matrix_1.name, matrix_2.name)
     x_size = matrix_1.m

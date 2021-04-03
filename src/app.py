@@ -10,6 +10,7 @@ from models import ListaEnlazada, Matriz
 from helpers import define_geometry, search_matrix, clear_frames
 from config import *
 from binary_ops import union_matrix, intersec_matrix
+from Excepts import MatrixSizeException
 
 
 def load_file():
@@ -87,6 +88,8 @@ def invoke_rotate_h():
                 count_y = count_y + 1
             count_x = count_x + 1
 
+        matrix_input.define(matrix_output)
+
         log_str = '{} - Rotación Horizontal - Matriz: {}'.format(
             datetime.now(), matrix_input.name)
         reports.append(log_str)
@@ -155,6 +158,8 @@ def invoke_rotate_v():
                     any_label.grid(column=count_x, row=count_y)
                 count_y = count_y + 1
             count_x = count_x + 1
+
+        matrix_input.define(matrix_output)
 
         log_str = '{} - Rotación Vertical - Matriz: {}'.format(
             datetime.now(), matrix_input.name)
@@ -225,6 +230,8 @@ def invoke_transpose():
                 count_y = count_y + 1
             count_x = count_x + 1
 
+        matrix_input.define(matrix_output)
+
         log_str = '{} - Transposición - Matriz: {}'.format(
             datetime.now(), matrix_input.name)
         reports.append(log_str)
@@ -294,34 +301,33 @@ def invoke_union():
                 count_y = count_y + 1
             count_x = count_x + 1
 
-        matrix_output = union_matrix(matrix_input_1, matrix_input_2)
-
-        if matrix_output is None:
+        try:
+            matrix_output = union_matrix(matrix_input_1, matrix_input_2)
+        except MatrixSizeException:
             log_str = '{} - Error: Matrices de tamaños distintos, Union - {} y {}'.format(
                 datetime.now(), matrix_input_1.name, matrix_input_2.name)
             reports.append(log_str)
             message_str = 'Las matrices deben ser del mismo tamaño'
             showerror(union_window, message=message_str)
-            return
+        else:
+            count_x = 0
+            while count_x < matrix_output.m:
+                count_y = 0
+                while count_y < matrix_output.n:
+                    if matrix_output.get(count_x, count_y) == '*':
+                        any_label = Label(output_matrix, bg='black', text='*')
+                        any_label.config(width=2, height=1)
+                        any_label.grid(column=count_x, row=count_y)
+                    else:
+                        any_label = Label(output_matrix, text=' ')
+                        any_label.config(width=2, height=1)
+                        any_label.grid(column=count_x, row=count_y)
+                    count_y = count_y + 1
+                count_x = count_x + 1
 
-        count_x = 0
-        while count_x < matrix_output.m:
-            count_y = 0
-            while count_y < matrix_output.n:
-                if matrix_output.get(count_x, count_y) == '*':
-                    any_label = Label(output_matrix, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(output_matrix, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
-
-        log_str = '{} - Union - Matrices: {} y {}'.format(
-            datetime.now(), matrix_input_1.name, matrix_input_2.name)
-        reports.append(log_str)
+            log_str = '{} - Union - Matrices: {} y {}'.format(
+                datetime.now(), matrix_input_1.name, matrix_input_2.name)
+            reports.append(log_str)
 
     union_window = Toplevel(window)
 
@@ -391,34 +397,33 @@ def invoke_intersec():
                 count_y = count_y + 1
             count_x = count_x + 1
 
-        matrix_output = intersec_matrix(matrix_input_1, matrix_input_2)
-
-        if matrix_output is None:
+        try:
+            matrix_output = intersec_matrix(matrix_input_1, matrix_input_2)
+        except MatrixSizeException:
             log_str = '{} - Error: Matrices de tamaños distintos, Intersección - {} y {}'.format(
                 datetime.now(), matrix_input_1.name, matrix_input_2.name)
             reports.append(log_str)
             message_str = 'Las matrices deben ser del mismo tamaño'
             showerror(intersec_window, message=message_str)
-            return
+        else:
+            count_x = 0
+            while count_x < matrix_output.m:
+                count_y = 0
+                while count_y < matrix_output.n:
+                    if matrix_output.get(count_x, count_y) == '*':
+                        any_label = Label(output_matrix, bg='black', text='*')
+                        any_label.config(width=2, height=1)
+                        any_label.grid(column=count_x, row=count_y)
+                    else:
+                        any_label = Label(output_matrix, text=' ')
+                        any_label.config(width=2, height=1)
+                        any_label.grid(column=count_x, row=count_y)
+                    count_y = count_y + 1
+                count_x = count_x + 1
 
-        count_x = 0
-        while count_x < matrix_output.m:
-            count_y = 0
-            while count_y < matrix_output.n:
-                if matrix_output.get(count_x, count_y) == '*':
-                    any_label = Label(output_matrix, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(output_matrix, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
-
-        log_str = '{} - Intersección - Matrices: {} y {}'.format(
-            datetime.now(), matrix_input_1.name, matrix_input_2.name)
-        reports.append(log_str)
+            log_str = '{} - Intersección - Matrices: {} y {}'.format(
+                datetime.now(), matrix_input_1.name, matrix_input_2.name)
+            reports.append(log_str)
 
     intersec_window = Toplevel(window)
 
@@ -462,9 +467,9 @@ def print_reports():
                       autoescape=select_autoescape(['html']))
     template = env.get_template('reports.html')
 
-    html_url = '{}{}{}_html_report.html'.format(datetime.now().day,
-                                                datetime.now().month,
-                                                datetime.now().year)
+    html_url = '{}{}{}_html_report.log.html'.format(datetime.now().day,
+                                                    datetime.now().month,
+                                                    datetime.now().year)
     html_file = open(html_url, 'w+')
     html_file.write(template.render(reports=reports))
     html_file.close()

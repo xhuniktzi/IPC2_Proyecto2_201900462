@@ -130,3 +130,5 @@ dmypy.json
 
 # test files
 test_files/
+
+*.log.html
