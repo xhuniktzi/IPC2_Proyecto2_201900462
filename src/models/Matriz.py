@@ -139,8 +139,19 @@ class Matriz:
                 count_x = count_x + 1
             return clear_matrix
 
-    def add_horizontal_line(self, row: int, column: int, count: int):
-        pass
+    def add_horizontal_line(self, x: int, y: int, count: int):
+        x_init = x
+        x_end = x + (count - 1)
+        if (x_end > self.m) or (count <= 0):
+            raise InvalidRangeException
+        else:
+            horizontal_line_matrix = Matriz(self.name, self.m, self.n)
+            horizontal_line_matrix.define(self)
+            x_count = x_init
+            while x_count <= x_end:
+                horizontal_line_matrix.insert(x_count, y, '*')
+                x_count = x_count + 1
+            return horizontal_line_matrix
 
     def add_vertical_line(self, row: int, column: int, count: int):
         pass

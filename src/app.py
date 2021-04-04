@@ -7,7 +7,7 @@ from datetime import datetime
 from jinja2 import Environment, select_autoescape, PackageLoader
 from os import startfile
 from models import ListaEnlazada, Matriz
-from helpers import define_geometry, search_matrix, clear_frames
+from helpers import define_geometry, search_matrix, clear_frames, render_grid
 from config import *
 from binary_ops import union_matrix, intersec_matrix
 from Excepts import MatrixSizeException, InvalidRangeException
@@ -57,36 +57,10 @@ def invoke_rotate_h():
     def execute_cmd():
         clear_frames()
         matrix_input = search_matrix(select_matrix.get())
-        count_x = 0
-        while count_x < matrix_input.m:
-            count_y = 0
-            while count_y < matrix_input.n:
-                if matrix_input.get(count_x, count_y) == '*':
-                    any_label = Label(input_matrix_1, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(input_matrix_1, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
+        render_grid(input_matrix_1, matrix_input)
 
         matrix_output = matrix_input.rotate_horizontal()
-        count_x = 0
-        while count_x < matrix_output.m:
-            count_y = 0
-            while count_y < matrix_output.n:
-                if matrix_output.get(count_x, count_y) == '*':
-                    any_label = Label(output_matrix, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(output_matrix, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
+        render_grid(output_matrix, matrix_output)
 
         matrix_input.define(matrix_output)
 
@@ -128,36 +102,10 @@ def invoke_rotate_v():
     def execute_cmd():
         clear_frames()
         matrix_input = search_matrix(select_matrix.get())
-        count_x = 0
-        while count_x < matrix_input.m:
-            count_y = 0
-            while count_y < matrix_input.n:
-                if matrix_input.get(count_x, count_y) == '*':
-                    any_label = Label(input_matrix_1, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(input_matrix_1, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
+        render_grid(input_matrix_1, matrix_input)
 
         matrix_output = matrix_input.rotate_vertical()
-        count_x = 0
-        while count_x < matrix_output.m:
-            count_y = 0
-            while count_y < matrix_output.n:
-                if matrix_output.get(count_x, count_y) == '*':
-                    any_label = Label(output_matrix, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(output_matrix, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
+        render_grid(output_matrix, matrix_output)
 
         matrix_input.define(matrix_output)
 
@@ -199,36 +147,10 @@ def invoke_transpose():
     def execute_cmd():
         clear_frames()
         matrix_input = search_matrix(select_matrix.get())
-        count_x = 0
-        while count_x < matrix_input.m:
-            count_y = 0
-            while count_y < matrix_input.n:
-                if matrix_input.get(count_x, count_y) == '*':
-                    any_label = Label(input_matrix_1, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(input_matrix_1, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
+        render_grid(input_matrix_1, matrix_input)
 
         matrix_output = matrix_input.transpose()
-        count_x = 0
-        while count_x < matrix_output.m:
-            count_y = 0
-            while count_y < matrix_output.n:
-                if matrix_output.get(count_x, count_y) == '*':
-                    any_label = Label(output_matrix, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(output_matrix, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
+        render_grid(output_matrix, matrix_output)
 
         matrix_input.define(matrix_output)
 
@@ -270,20 +192,7 @@ def invoke_clear():
     def execute_cmd():
         clear_frames()
         matrix_input = search_matrix(select_matrix.get())
-        count_x = 0
-        while count_x < matrix_input.m:
-            count_y = 0
-            while count_y < matrix_input.n:
-                if matrix_input.get(count_x, count_y) == '*':
-                    any_label = Label(input_matrix_1, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(input_matrix_1, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
+        render_grid(input_matrix_1, matrix_input)
 
         x_o = int(range_x_o.get())
         y_o = int(range_y_o.get())
@@ -304,20 +213,7 @@ def invoke_clear():
             message_str = 'Las coordenadas iniciales no pueden ser mayores que las finales'
             showerror(clear_window, message=message_str)
         else:
-            count_x = 0
-            while count_x < matrix_output.m:
-                count_y = 0
-                while count_y < matrix_output.n:
-                    if matrix_output.get(count_x, count_y) == '*':
-                        any_label = Label(output_matrix, bg='black', text='*')
-                        any_label.config(width=2, height=1)
-                        any_label.grid(column=count_x, row=count_y)
-                    else:
-                        any_label = Label(output_matrix, text=' ')
-                        any_label.config(width=2, height=1)
-                        any_label.grid(column=count_x, row=count_y)
-                    count_y = count_y + 1
-                count_x = count_x + 1
+            render_grid(output_matrix, matrix_output)
 
             matrix_input.define(matrix_output)
 
@@ -343,7 +239,6 @@ def invoke_clear():
         list_matrix.append(data.get_by_index(count).name)
         count = count + 1
 
-    # Fix con columnspan
     select_matrix = Combobox(clear_window, width=24, state='readonly')
     select_matrix.grid(row=0, column=1, padx=5, pady=5)
     select_matrix['values'] = list_matrix
@@ -379,40 +274,88 @@ def invoke_clear():
     range_y_f.grid(row=2, column=3, padx=5, pady=5)
 
 
+def invoke_add_horizontal():
+    def execute_cmd():
+        clear_frames()
+        matrix_input = search_matrix(select_matrix.get())
+        render_grid(input_matrix_1, matrix_input)
+
+        x_o = int(range_x_o.get())
+        y_o = int(range_y_o.get())
+        count_elements = int(range_count.get())
+        try:
+            matrix_output = matrix_input.add_horizontal_line(
+                x_o, y_o, count_elements)
+        except InvalidRangeException:
+            log_str = '{} - Error: Coordenadas fuera de rango, Añadir Linea Horizontal, Matriz: {}'.format(
+                datetime.now(), matrix_input.name)
+            reports.append(log_str)
+            message_str = 'Las coordenadas iniciales no pueden ser mayores que las finales'
+            showerror(clear_window, message=message_str)
+        else:
+            render_grid(output_matrix, matrix_output)
+
+            matrix_input.define(matrix_output)
+
+            log_str = '{} - Añadir Linea horizontal - Matriz: {} del rango {},{}, cantidad {}'.format(
+                datetime.now(), matrix_input.name, x_o, y_o, count_elements)
+            reports.append(log_str)
+
+    clear_window = Toplevel(window)
+
+    data_geometry = define_geometry(clear_window, 600, 200)
+    clear_window.geometry(data_geometry)
+
+    clear_window.resizable(0, 0)
+    clear_window.title('Añadir Linea Horiontal')
+
+    select_matrix_label = Label(clear_window, text='Selecciona una matriz: ')
+
+    select_matrix_label.grid(row=0, column=0, padx=5, pady=5)
+
+    list_matrix = list()
+    count = 0
+    while count < data.get_size():
+        list_matrix.append(data.get_by_index(count).name)
+        count = count + 1
+
+    select_matrix = Combobox(clear_window, width=24, state='readonly')
+    select_matrix.grid(row=0, column=1, padx=5, pady=5)
+    select_matrix['values'] = list_matrix
+
+    submit_button = Button(clear_window,
+                           text="Añadir Linea",
+                           command=execute_cmd)
+
+    submit_button.grid(row=0, column=2, padx=5, pady=5)
+
+    range_x_o_label = Label(clear_window, text='Valor de x inicial: ')
+    range_x_o_label.grid(row=1, column=0, padx=5, pady=5)
+
+    range_x_o = Entry(clear_window)
+    range_x_o.grid(row=1, column=1, padx=5, pady=5)
+
+    range_y_o_label = Label(clear_window, text='Valor de y inicial: ')
+    range_y_o_label.grid(row=2, column=0, padx=5, pady=5)
+
+    range_y_o = Entry(clear_window)
+    range_y_o.grid(row=2, column=1, padx=5, pady=5)
+
+    range_count_label = Label(clear_window,
+                              text='Cantidad de elementos a agregar')
+    range_count_label.grid(row=3, column=0, padx=5, pady=5)
+    range_count = Entry(clear_window)
+    range_count.grid(row=3, column=1, padx=5, pady=5)
+
+
 def invoke_union():
     def execute_cmd():
         clear_frames()
         matrix_input_1 = search_matrix(select_matrix_1.get())
-        count_x = 0
-        while count_x < matrix_input_1.m:
-            count_y = 0
-            while count_y < matrix_input_1.n:
-                if matrix_input_1.get(count_x, count_y) == '*':
-                    any_label = Label(input_matrix_1, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(input_matrix_1, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
+        render_grid(input_matrix_1, matrix_input_1)
 
         matrix_input_2 = search_matrix(select_matrix_2.get())
-        count_x = 0
-        while count_x < matrix_input_2.m:
-            count_y = 0
-            while count_y < matrix_input_2.n:
-                if matrix_input_2.get(count_x, count_y) == '*':
-                    any_label = Label(input_matrix_2, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(input_matrix_2, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
+        render_grid(input_matrix_2, matrix_input_2)
 
         try:
             matrix_output = union_matrix(matrix_input_1, matrix_input_2)
@@ -423,20 +366,7 @@ def invoke_union():
             message_str = 'Las matrices deben ser del mismo tamaño'
             showerror(union_window, message=message_str)
         else:
-            count_x = 0
-            while count_x < matrix_output.m:
-                count_y = 0
-                while count_y < matrix_output.n:
-                    if matrix_output.get(count_x, count_y) == '*':
-                        any_label = Label(output_matrix, bg='black', text='*')
-                        any_label.config(width=2, height=1)
-                        any_label.grid(column=count_x, row=count_y)
-                    else:
-                        any_label = Label(output_matrix, text=' ')
-                        any_label.config(width=2, height=1)
-                        any_label.grid(column=count_x, row=count_y)
-                    count_y = count_y + 1
-                count_x = count_x + 1
+            render_grid(output_matrix, matrix_output)
 
             log_str = '{} - Union - Matrices: {} y {}'.format(
                 datetime.now(), matrix_input_1.name, matrix_input_2.name)
@@ -479,36 +409,10 @@ def invoke_intersec():
     def execute_cmd():
         clear_frames()
         matrix_input_1 = search_matrix(select_matrix_1.get())
-        count_x = 0
-        while count_x < matrix_input_1.m:
-            count_y = 0
-            while count_y < matrix_input_1.n:
-                if matrix_input_1.get(count_x, count_y) == '*':
-                    any_label = Label(input_matrix_1, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(input_matrix_1, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
+        render_grid(input_matrix_1, matrix_input_1)
 
         matrix_input_2 = search_matrix(select_matrix_2.get())
-        count_x = 0
-        while count_x < matrix_input_2.m:
-            count_y = 0
-            while count_y < matrix_input_2.n:
-                if matrix_input_2.get(count_x, count_y) == '*':
-                    any_label = Label(input_matrix_2, bg='black', text='*')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                else:
-                    any_label = Label(input_matrix_2, text=' ')
-                    any_label.config(width=2, height=1)
-                    any_label.grid(column=count_x, row=count_y)
-                count_y = count_y + 1
-            count_x = count_x + 1
+        render_grid(input_matrix_2, matrix_input_2)
 
         try:
             matrix_output = intersec_matrix(matrix_input_1, matrix_input_2)
@@ -519,20 +423,7 @@ def invoke_intersec():
             message_str = 'Las matrices deben ser del mismo tamaño'
             showerror(intersec_window, message=message_str)
         else:
-            count_x = 0
-            while count_x < matrix_output.m:
-                count_y = 0
-                while count_y < matrix_output.n:
-                    if matrix_output.get(count_x, count_y) == '*':
-                        any_label = Label(output_matrix, bg='black', text='*')
-                        any_label.config(width=2, height=1)
-                        any_label.grid(column=count_x, row=count_y)
-                    else:
-                        any_label = Label(output_matrix, text=' ')
-                        any_label.config(width=2, height=1)
-                        any_label.grid(column=count_x, row=count_y)
-                    count_y = count_y + 1
-                count_x = count_x + 1
+            render_grid(output_matrix, matrix_output)
 
             log_str = '{} - Intersección - Matrices: {} y {}'.format(
                 datetime.now(), matrix_input_1.name, matrix_input_2.name)
@@ -617,7 +508,8 @@ if __name__ == '__main__':
                              command=invoke_transpose)
     op_unit_menu.add_command(label='Limpiar zona de una imagen...',
                              command=invoke_clear)
-    op_unit_menu.add_command(label='Agregar linea horizontal...')
+    op_unit_menu.add_command(label='Agregar linea horizontal...',
+                             command=invoke_add_horizontal)
     op_unit_menu.add_command(label='Agregar linea vertical...')
     op_unit_menu.add_command(label='Agregar rectángulo...')
     op_unit_menu.add_command(label='Agregar triangulo rectángulo...')
