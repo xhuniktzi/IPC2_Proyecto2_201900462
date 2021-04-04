@@ -1,5 +1,6 @@
 from models import ListaEnlazada, Matriz
 from os import system, startfile
+from Excepts import InvalidRangeException, MatrixSizeException
 
 
 class Matriz:
@@ -104,7 +105,6 @@ class Matriz:
             rotate_matrix.set_column(aux_count_x, act_column)
             count_x = count_x + 1
             aux_count_x = aux_count_x - 1
-
         return rotate_matrix
 
     # Transponer imagen
@@ -118,5 +118,29 @@ class Matriz:
                 transpose_matrix.insert(count_y, count_x, value)
                 count_y = count_y + 1
             count_x = count_x + 1
-
         return transpose_matrix
+
+    # Limpiar una zona
+    def clear_zone(self, x_o: int, y_o: int, x_f: int, y_f: int):
+        if (x_o > x_f) or (y_o > y_f):
+            raise InvalidRangeException
+        elif (x_o > self.m) or (y_o > self.n) or (x_f > self.m) or (y_f >
+                                                                    self.n):
+            raise MatrixSizeException
+        else:
+            clear_matrix = Matriz(self.name, self.m, self.n)
+            clear_matrix.define(self)
+            count_x = x_o
+            while count_x <= x_f:
+                count_y = y_o
+                while count_y <= y_f:
+                    clear_matrix.insert(count_x, count_y, '-')
+                    count_y = count_y + 1
+                count_x = count_x + 1
+            return clear_matrix
+
+    def add_horizontal_line(self, row: int, column: int, count: int):
+        pass
+
+    def add_vertical_line(self, row: int, column: int, count: int):
+        pass

@@ -1,4 +1,4 @@
-from tkinter import Tk, Menu, Toplevel, Label, Button
+from tkinter import Tk, Menu, Toplevel, Label, Button, Entry
 from tkinter.ttk import Combobox
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo, showerror
@@ -10,7 +10,7 @@ from models import ListaEnlazada, Matriz
 from helpers import define_geometry, search_matrix, clear_frames
 from config import *
 from binary_ops import union_matrix, intersec_matrix
-from Excepts import MatrixSizeException
+from Excepts import MatrixSizeException, InvalidRangeException
 
 
 def load_file():
@@ -266,6 +266,119 @@ def invoke_transpose():
     submit_button.grid(row=0, column=2, padx=5, pady=5)
 
 
+def invoke_clear():
+    def execute_cmd():
+        clear_frames()
+        matrix_input = search_matrix(select_matrix.get())
+        count_x = 0
+        while count_x < matrix_input.m:
+            count_y = 0
+            while count_y < matrix_input.n:
+                if matrix_input.get(count_x, count_y) == '*':
+                    any_label = Label(input_matrix_1, bg='black', text='*')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                else:
+                    any_label = Label(input_matrix_1, text=' ')
+                    any_label.config(width=2, height=1)
+                    any_label.grid(column=count_x, row=count_y)
+                count_y = count_y + 1
+            count_x = count_x + 1
+
+        x_o = int(range_x_o.get())
+        y_o = int(range_y_o.get())
+        x_f = int(range_x_f.get())
+        y_f = int(range_y_f.get())
+        try:
+            matrix_output = matrix_input.clear_zone(x_o, y_o, x_f, y_f)
+        except MatrixSizeException:
+            log_str = '{} - Error: Coordenadas fuera de la imagen, Limpiar Zona, Matriz: {}'.format(
+                datetime.now(), matrix_input.name)
+            reports.append(log_str)
+            message_str = 'Coordenadas fuera de la imagen'
+            showerror(clear_window, message=message_str)
+        except InvalidRangeException:
+            log_str = '{} - Error: Coordenadas iniciales mayores que las finales, Limpiar Zona, Matriz: {}'.format(
+                datetime.now(), matrix_input.name)
+            reports.append(log_str)
+            message_str = 'Las coordenadas iniciales no pueden ser mayores que las finales'
+            showerror(clear_window, message=message_str)
+        else:
+            count_x = 0
+            while count_x < matrix_output.m:
+                count_y = 0
+                while count_y < matrix_output.n:
+                    if matrix_output.get(count_x, count_y) == '*':
+                        any_label = Label(output_matrix, bg='black', text='*')
+                        any_label.config(width=2, height=1)
+                        any_label.grid(column=count_x, row=count_y)
+                    else:
+                        any_label = Label(output_matrix, text=' ')
+                        any_label.config(width=2, height=1)
+                        any_label.grid(column=count_x, row=count_y)
+                    count_y = count_y + 1
+                count_x = count_x + 1
+
+            matrix_input.define(matrix_output)
+
+            log_str = '{} - Limpiar Zona - Matriz: {} del rango {},{} a {},{}'.format(
+                datetime.now(), matrix_input.name, x_o, y_o, x_f, y_f)
+            reports.append(log_str)
+
+    clear_window = Toplevel(window)
+
+    data_geometry = define_geometry(clear_window, 600, 150)
+    clear_window.geometry(data_geometry)
+
+    clear_window.resizable(0, 0)
+    clear_window.title('Limpiar Zona')
+
+    select_matrix_label = Label(clear_window, text='Selecciona una matriz: ')
+
+    select_matrix_label.grid(row=0, column=0, padx=5, pady=5)
+
+    list_matrix = list()
+    count = 0
+    while count < data.get_size():
+        list_matrix.append(data.get_by_index(count).name)
+        count = count + 1
+
+    # Fix con columnspan
+    select_matrix = Combobox(clear_window, width=24, state='readonly')
+    select_matrix.grid(row=0, column=1, padx=5, pady=5)
+    select_matrix['values'] = list_matrix
+
+    submit_button = Button(clear_window,
+                           text="Limpiar Zona",
+                           command=execute_cmd)
+
+    submit_button.grid(row=0, column=2, padx=5, pady=5)
+
+    range_x_o_label = Label(clear_window, text='Valor de x inicial: ')
+    range_x_o_label.grid(row=1, column=0, padx=5, pady=5)
+
+    range_x_o = Entry(clear_window)
+    range_x_o.grid(row=1, column=1, padx=5, pady=5)
+
+    range_y_o_label = Label(clear_window, text='Valor de y inicial: ')
+    range_y_o_label.grid(row=1, column=2, padx=5, pady=5)
+
+    range_y_o = Entry(clear_window)
+    range_y_o.grid(row=1, column=3, padx=5, pady=5)
+
+    range_x_f_label = Label(clear_window, text='Valor de x final: ')
+    range_x_f_label.grid(row=2, column=0, padx=5, pady=5)
+
+    range_x_f = Entry(clear_window)
+    range_x_f.grid(row=2, column=1, padx=5, pady=5)
+
+    range_y_f_label = Label(clear_window, text='Valor de y final: ')
+    range_y_f_label.grid(row=2, column=2, padx=5, pady=5)
+
+    range_y_f = Entry(clear_window)
+    range_y_f.grid(row=2, column=3, padx=5, pady=5)
+
+
 def invoke_union():
     def execute_cmd():
         clear_frames()
@@ -467,9 +580,12 @@ def print_reports():
                       autoescape=select_autoescape(['html']))
     template = env.get_template('reports.html')
 
-    html_url = '{}{}{}_html_report.log.html'.format(datetime.now().day,
-                                                    datetime.now().month,
-                                                    datetime.now().year)
+    html_url = '{}{}_{}{}{}_html_report.log.html'.format(
+        datetime.now().minute,
+        datetime.now().hour,
+        datetime.now().day,
+        datetime.now().month,
+        datetime.now().year)
     html_file = open(html_url, 'w+')
     html_file.write(template.render(reports=reports))
     html_file.close()
@@ -499,7 +615,8 @@ if __name__ == '__main__':
                              command=invoke_rotate_v)
     op_unit_menu.add_command(label='Transponer imagen...',
                              command=invoke_transpose)
-    op_unit_menu.add_command(label='Limpiar zona de una imagen...')
+    op_unit_menu.add_command(label='Limpiar zona de una imagen...',
+                             command=invoke_clear)
     op_unit_menu.add_command(label='Agregar linea horizontal...')
     op_unit_menu.add_command(label='Agregar linea vertical...')
     op_unit_menu.add_command(label='Agregar rectángulo...')
