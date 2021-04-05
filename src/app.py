@@ -290,8 +290,8 @@ def invoke_add_horizontal():
             log_str = '{} - Error: Coordenadas fuera de rango, Añadir Linea Horizontal, Matriz: {}'.format(
                 datetime.now(), matrix_input.name)
             reports.append(log_str)
-            message_str = 'Las coordenadas iniciales no pueden ser mayores que las finales'
-            showerror(clear_window, message=message_str)
+            message_str = 'Coordenadas fuera de rango'
+            showerror(horizontal_line_window, message=message_str)
         else:
             render_grid(output_matrix, matrix_output)
 
@@ -301,15 +301,16 @@ def invoke_add_horizontal():
                 datetime.now(), matrix_input.name, x_o, y_o, count_elements)
             reports.append(log_str)
 
-    clear_window = Toplevel(window)
+    horizontal_line_window = Toplevel(window)
 
-    data_geometry = define_geometry(clear_window, 600, 200)
-    clear_window.geometry(data_geometry)
+    data_geometry = define_geometry(horizontal_line_window, 600, 200)
+    horizontal_line_window.geometry(data_geometry)
 
-    clear_window.resizable(0, 0)
-    clear_window.title('Añadir Linea Horiontal')
+    horizontal_line_window.resizable(0, 0)
+    horizontal_line_window.title('Añadir Linea Horizontal')
 
-    select_matrix_label = Label(clear_window, text='Selecciona una matriz: ')
+    select_matrix_label = Label(horizontal_line_window,
+                                text='Selecciona una matriz: ')
 
     select_matrix_label.grid(row=0, column=0, padx=5, pady=5)
 
@@ -319,32 +320,111 @@ def invoke_add_horizontal():
         list_matrix.append(data.get_by_index(count).name)
         count = count + 1
 
-    select_matrix = Combobox(clear_window, width=24, state='readonly')
+    select_matrix = Combobox(horizontal_line_window,
+                             width=24,
+                             state='readonly')
     select_matrix.grid(row=0, column=1, padx=5, pady=5)
     select_matrix['values'] = list_matrix
 
-    submit_button = Button(clear_window,
+    submit_button = Button(horizontal_line_window,
                            text="Añadir Linea",
                            command=execute_cmd)
 
     submit_button.grid(row=0, column=2, padx=5, pady=5)
 
-    range_x_o_label = Label(clear_window, text='Valor de x inicial: ')
+    range_x_o_label = Label(horizontal_line_window,
+                            text='Valor de x inicial: ')
     range_x_o_label.grid(row=1, column=0, padx=5, pady=5)
 
-    range_x_o = Entry(clear_window)
+    range_x_o = Entry(horizontal_line_window)
     range_x_o.grid(row=1, column=1, padx=5, pady=5)
 
-    range_y_o_label = Label(clear_window, text='Valor de y inicial: ')
+    range_y_o_label = Label(horizontal_line_window,
+                            text='Valor de y inicial: ')
     range_y_o_label.grid(row=2, column=0, padx=5, pady=5)
 
-    range_y_o = Entry(clear_window)
+    range_y_o = Entry(horizontal_line_window)
     range_y_o.grid(row=2, column=1, padx=5, pady=5)
 
-    range_count_label = Label(clear_window,
+    range_count_label = Label(horizontal_line_window,
                               text='Cantidad de elementos a agregar')
     range_count_label.grid(row=3, column=0, padx=5, pady=5)
-    range_count = Entry(clear_window)
+    range_count = Entry(horizontal_line_window)
+    range_count.grid(row=3, column=1, padx=5, pady=5)
+
+
+def invoke_add_vertical():
+    def execute_cmd():
+        clear_frames()
+        matrix_input = search_matrix(select_matrix.get())
+        render_grid(input_matrix_1, matrix_input)
+
+        x_o = int(range_x_o.get())
+        y_o = int(range_y_o.get())
+        count_elements = int(range_count.get())
+        try:
+            matrix_output = matrix_input.add_vertical_line(
+                x_o, y_o, count_elements)
+        except InvalidRangeException:
+            log_str = '{} - Error: Coordenadas fuera de rango, Añadir Linea Vertical, Matriz: {}'.format(
+                datetime.now(), matrix_input.name)
+            reports.append(log_str)
+            message_str = 'Coordenadas fuera de rango'
+            showerror(vertical_line_window, message=message_str)
+        else:
+            render_grid(output_matrix, matrix_output)
+
+            matrix_input.define(matrix_output)
+
+            log_str = '{} - Añadir Linea vertical - Matriz: {} del rango {},{}, cantidad {}'.format(
+                datetime.now(), matrix_input.name, x_o, y_o, count_elements)
+            reports.append(log_str)
+
+    vertical_line_window = Toplevel(window)
+
+    data_geometry = define_geometry(vertical_line_window, 600, 200)
+    vertical_line_window.geometry(data_geometry)
+
+    vertical_line_window.resizable(0, 0)
+    vertical_line_window.title('Añadir Linea Vertical')
+
+    select_matrix_label = Label(vertical_line_window,
+                                text='Selecciona una matriz: ')
+
+    select_matrix_label.grid(row=0, column=0, padx=5, pady=5)
+
+    list_matrix = list()
+    count = 0
+    while count < data.get_size():
+        list_matrix.append(data.get_by_index(count).name)
+        count = count + 1
+
+    select_matrix = Combobox(vertical_line_window, width=24, state='readonly')
+    select_matrix.grid(row=0, column=1, padx=5, pady=5)
+    select_matrix['values'] = list_matrix
+
+    submit_button = Button(vertical_line_window,
+                           text="Añadir Linea",
+                           command=execute_cmd)
+
+    submit_button.grid(row=0, column=2, padx=5, pady=5)
+
+    range_x_o_label = Label(vertical_line_window, text='Valor de x inicial: ')
+    range_x_o_label.grid(row=1, column=0, padx=5, pady=5)
+
+    range_x_o = Entry(vertical_line_window)
+    range_x_o.grid(row=1, column=1, padx=5, pady=5)
+
+    range_y_o_label = Label(vertical_line_window, text='Valor de y inicial: ')
+    range_y_o_label.grid(row=2, column=0, padx=5, pady=5)
+
+    range_y_o = Entry(vertical_line_window)
+    range_y_o.grid(row=2, column=1, padx=5, pady=5)
+
+    range_count_label = Label(vertical_line_window,
+                              text='Cantidad de elementos a agregar')
+    range_count_label.grid(row=3, column=0, padx=5, pady=5)
+    range_count = Entry(vertical_line_window)
     range_count.grid(row=3, column=1, padx=5, pady=5)
 
 
@@ -510,7 +590,8 @@ if __name__ == '__main__':
                              command=invoke_clear)
     op_unit_menu.add_command(label='Agregar linea horizontal...',
                              command=invoke_add_horizontal)
-    op_unit_menu.add_command(label='Agregar linea vertical...')
+    op_unit_menu.add_command(label='Agregar linea vertical...',
+                             command=invoke_add_vertical)
     op_unit_menu.add_command(label='Agregar rectángulo...')
     op_unit_menu.add_command(label='Agregar triangulo rectángulo...')
     menu_bar.add_cascade(label='Operaciones unitarias', menu=op_unit_menu)
