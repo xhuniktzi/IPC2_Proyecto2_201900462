@@ -456,6 +456,8 @@ def invoke_union():
             render_grid(output_matrix, matrix_output)
             matrix_output.render_graphviz()
 
+            data.add_to_end(matrix_output)
+
             log_str = '{} - Union - Matrices: {} y {}'.format(
                 datetime.now(), matrix_input_1.name, matrix_input_2.name)
             reports.append(log_str)
@@ -513,6 +515,8 @@ def invoke_intersec():
         else:
             render_grid(output_matrix, matrix_output)
             matrix_output.render_graphviz()
+
+            data.add_to_end(matrix_output)
 
             log_str = '{} - Intersección - Matrices: {} y {}'.format(
                 datetime.now(), matrix_input_1.name, matrix_input_2.name)
