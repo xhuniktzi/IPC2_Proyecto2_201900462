@@ -118,14 +118,11 @@ class Matriz:
 
     # Definir Matriz
     def define(self, matrix: Matriz):
-        count_x = 0
-        while count_x < self.m:
-            count_y = 0
-            while count_y < self.n:
-                value = matrix.get(count_x, count_y)
-                self.insert(count_x, count_y, value)
-                count_y = count_y + 1
-            count_x = count_x + 1
+        self.row_list.clear()
+
+        self.m = matrix.m
+        self.n = matrix.n
+        self.row_list = matrix.row_list
 
     # Obtener columna
     def get_column(self, x: int):
