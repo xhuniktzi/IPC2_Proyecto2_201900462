@@ -1,5 +1,6 @@
 from models import ListaEnlazada, Matriz
 from os import system, startfile
+from datetime import datetime
 from Excepts import InvalidRangeException, MatrixSizeException
 
 
@@ -54,6 +55,32 @@ class Matriz:
             self.get_row(count).print_list()
             count = count + 1
         print()
+
+    # Dibujar graphviz
+    def render_graphviz(self):
+        dot_filename = '{}{}{}_{}{}{}_graph_{}.dot'.format(
+            datetime.now().second,
+            datetime.now().minute,
+            datetime.now().hour,
+            datetime.now().day,
+            datetime.now().month,
+            datetime.now().year, self.name)
+        dot_file = open(dot_filename, 'w+')
+        dot_file.write('digraph G {')  # Begin
+        dot_file.write('label="Matriz: {}";'.format(self.name))
+        dot_file.write('labelloc=t;')
+        dot_file.write('graph [fontname="Verdana" compound=true rankdir=LR];')
+        dot_file.write('node [shape=record fontname="Verdana"];')
+        dot_file.write('}')  # End
+        dot_file.close()
+
+        output_filename = '{}{}_{}{}{}_graph_{}.svg'.format(
+            datetime.now().minute,
+            datetime.now().hour,
+            datetime.now().day,
+            datetime.now().month,
+            datetime.now().year, self.name)
+        system('dot -Tsvg {} -o {}'.format(dot_filename, output_filename))
 
     # Definir Matriz
     def define(self, matrix: Matriz):

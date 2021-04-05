@@ -51,6 +51,7 @@ def load_file():
             datetime.now(), name, black_cells, white_cells)
         reports.append(log_str)
         data.add_to_end(new_matrix)
+        new_matrix.render_graphviz()
 
 
 def invoke_rotate_h():
@@ -63,6 +64,7 @@ def invoke_rotate_h():
         render_grid(output_matrix, matrix_output)
 
         matrix_input.define(matrix_output)
+        matrix_output.render_graphviz()
 
         log_str = '{} - Rotación Horizontal - Matriz: {}'.format(
             datetime.now(), matrix_input.name)
@@ -108,6 +110,7 @@ def invoke_rotate_v():
         render_grid(output_matrix, matrix_output)
 
         matrix_input.define(matrix_output)
+        matrix_output.render_graphviz()
 
         log_str = '{} - Rotación Vertical - Matriz: {}'.format(
             datetime.now(), matrix_input.name)
@@ -153,6 +156,7 @@ def invoke_transpose():
         render_grid(output_matrix, matrix_output)
 
         matrix_input.define(matrix_output)
+        matrix_output.render_graphviz()
 
         log_str = '{} - Transposición - Matriz: {}'.format(
             datetime.now(), matrix_input.name)
@@ -216,6 +220,7 @@ def invoke_clear():
             render_grid(output_matrix, matrix_output)
 
             matrix_input.define(matrix_output)
+            matrix_output.render_graphviz()
 
             log_str = '{} - Limpiar Zona - Matriz: {} del rango {},{} a {},{}'.format(
                 datetime.now(), matrix_input.name, x_o, y_o, x_f, y_f)
@@ -296,6 +301,7 @@ def invoke_add_horizontal():
             render_grid(output_matrix, matrix_output)
 
             matrix_input.define(matrix_output)
+            matrix_output.render_graphviz()
 
             log_str = '{} - Añadir Linea horizontal - Matriz: {} del rango {},{}, cantidad {}'.format(
                 datetime.now(), matrix_input.name, x_o, y_o, count_elements)
@@ -375,6 +381,7 @@ def invoke_add_vertical():
             render_grid(output_matrix, matrix_output)
 
             matrix_input.define(matrix_output)
+            matrix_output.render_graphviz()
 
             log_str = '{} - Añadir Linea vertical - Matriz: {} del rango {},{}, cantidad {}'.format(
                 datetime.now(), matrix_input.name, x_o, y_o, count_elements)
@@ -447,6 +454,7 @@ def invoke_union():
             showerror(union_window, message=message_str)
         else:
             render_grid(output_matrix, matrix_output)
+            matrix_output.render_graphviz()
 
             log_str = '{} - Union - Matrices: {} y {}'.format(
                 datetime.now(), matrix_input_1.name, matrix_input_2.name)
@@ -504,6 +512,7 @@ def invoke_intersec():
             showerror(intersec_window, message=message_str)
         else:
             render_grid(output_matrix, matrix_output)
+            matrix_output.render_graphviz()
 
             log_str = '{} - Intersección - Matrices: {} y {}'.format(
                 datetime.now(), matrix_input_1.name, matrix_input_2.name)
@@ -592,15 +601,15 @@ if __name__ == '__main__':
                              command=invoke_add_horizontal)
     op_unit_menu.add_command(label='Agregar linea vertical...',
                              command=invoke_add_vertical)
-    op_unit_menu.add_command(label='Agregar rectángulo...')
-    op_unit_menu.add_command(label='Agregar triangulo rectángulo...')
+    # op_unit_menu.add_command(label='Agregar rectángulo...')
+    # op_unit_menu.add_command(label='Agregar triangulo rectángulo...')
     menu_bar.add_cascade(label='Operaciones unitarias', menu=op_unit_menu)
 
     op_bin_menu = Menu(menu_bar, tearoff=0)
     op_bin_menu.add_command(label='Union...', command=invoke_union)
     op_bin_menu.add_command(label='Intersección...', command=invoke_intersec)
-    op_bin_menu.add_command(label='Diferencia...')
-    op_bin_menu.add_command(label='Diferencia simétrica...')
+    # op_bin_menu.add_command(label='Diferencia...')
+    # op_bin_menu.add_command(label='Diferencia simétrica...')
     menu_bar.add_cascade(label='Operaciones binarias', menu=op_bin_menu)
 
     menu_bar.add_command(label='Reportes', command=print_reports)

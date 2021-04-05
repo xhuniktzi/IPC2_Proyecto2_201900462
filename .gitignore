@@ -129,6 +129,8 @@ dmypy.json
 .pyre/
 
 # test files
-test_files/
-
+*.xml
 *.log.html
+
+*.dot
+*.svg
