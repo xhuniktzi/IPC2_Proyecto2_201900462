@@ -122,7 +122,29 @@ class Matriz:
 
         self.m = matrix.m
         self.n = matrix.n
-        self.row_list = matrix.row_list
+        self.name = matrix.name
+
+        count_rows = 0
+        while self.n > count_rows:
+            row = ListaEnlazada()
+
+            count_cols = 0
+            while self.m > count_cols:
+                row.add_to_end(None)
+                count_cols = count_cols + 1
+
+            self.row_list.add_to_end(row)
+            count_rows = count_rows + 1
+
+        count_x = 0
+        while count_x < self.m:
+            count_y = 0
+            while count_y < self.n:
+                value = matrix.get(count_x, count_y)
+                self.insert(count_x, count_y, value)
+                count_y = count_y + 1
+            count_x = count_x + 1
+        # self.row_list = matrix.row_list
 
     # Obtener columna
     def get_column(self, x: int):
@@ -212,6 +234,7 @@ class Matriz:
                 x_count = x_count + 1
             return horizontal_line_matrix
 
+    # Añadir Linea Vertical
     def add_vertical_line(self, x: int, y: int, count: int):
         y_init = y
         y_end = y + (count - 1)

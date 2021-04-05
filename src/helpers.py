@@ -1,5 +1,5 @@
 from tkinter import Tk, Toplevel, Frame, Label
-from config import data, input_matrix_1, input_matrix_2, output_matrix
+from config import data, original_data, input_matrix_1, input_matrix_2, output_matrix
 from models.Matriz import Matriz
 
 
@@ -8,6 +8,15 @@ def search_matrix(name: str):
     while count < data.get_size():
         if data.get_by_index(count).name == name:
             return data.get_by_index(count)
+        count = count + 1
+    return None
+
+
+def search_original_matrix(name: str):
+    count = 0
+    while count < original_data.get_size():
+        if original_data.get_by_index(count).name == name:
+            return original_data.get_by_index(count)
         count = count + 1
     return None
 

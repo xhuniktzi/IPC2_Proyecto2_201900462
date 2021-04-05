@@ -7,7 +7,7 @@ from datetime import datetime
 from jinja2 import Environment, select_autoescape, PackageLoader
 from os import startfile
 from models import ListaEnlazada, Matriz
-from helpers import define_geometry, search_matrix, clear_frames, render_grid
+from helpers import define_geometry, search_matrix, search_original_matrix, clear_frames, render_grid
 from config import *
 from binary_ops import union_matrix, intersec_matrix
 from Excepts import MatrixSizeException, InvalidRangeException
@@ -51,7 +51,45 @@ def load_file():
             datetime.now(), name, black_cells, white_cells)
         reports.append(log_str)
         data.add_to_end(new_matrix)
+        original_copy = Matriz(new_matrix.name, new_matrix.m, new_matrix.n)
+        original_copy.define(new_matrix)
+        original_data.add_to_end(original_copy)
         new_matrix.render_graphviz()
+
+
+def view_matrixes():
+    def execute_cmd():
+        clear_frames()
+        original_matrix = search_original_matrix(select_matrix.get())
+        render_grid(input_matrix_1, original_matrix)
+        matrix = search_matrix(select_matrix.get())
+        render_grid(output_matrix, matrix)
+
+    view_window = Toplevel(window)
+
+    data_geometry = define_geometry(view_window, 500, 50)
+    view_window.geometry(data_geometry)
+
+    view_window.resizable(0, 0)
+    view_window.title('Ver matrices')
+
+    select_matrix_label = Label(view_window, text='Selecciona una matriz: ')
+
+    select_matrix_label.grid(row=0, column=0, padx=5, pady=5)
+
+    list_matrix = list()
+    count = 0
+    while count < data.get_size():
+        list_matrix.append(data.get_by_index(count).name)
+        count = count + 1
+
+    select_matrix = Combobox(view_window, width=24, state='readonly')
+    select_matrix.grid(row=0, column=1, padx=5, pady=5)
+    select_matrix['values'] = list_matrix
+
+    submit_button = Button(view_window, text="Visualizar", command=execute_cmd)
+
+    submit_button.grid(row=0, column=2, padx=5, pady=5)
 
 
 def invoke_rotate_h():
@@ -591,6 +629,7 @@ if __name__ == '__main__':
     window.title('Proyecto 2 - IPC2')
 
     menu_bar.add_command(label='Cargar Archivo', command=load_file)
+    menu_bar.add_command(label='Ver matrices', command=view_matrixes)
 
     op_unit_menu = Menu(menu_bar, tearoff=0)
     op_unit_menu.add_command(label='Rotar horizontalmente...',

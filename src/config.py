@@ -23,5 +23,6 @@ output_matrix = Frame(window)
 output_matrix.grid(row=1, column=2, padx=15, pady=15)
 
 data = ListaEnlazada()
+original_data = ListaEnlazada()
 
 reports = list()
