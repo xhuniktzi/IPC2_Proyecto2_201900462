@@ -66,15 +66,49 @@ class Matriz:
             datetime.now().month,
             datetime.now().year, self.name)
         dot_file = open(dot_filename, 'w+')
-        dot_file.write('digraph G {')  # Begin
+        dot_file.write('digraph G {')  # Begin file
         dot_file.write('label="Matriz: {}";'.format(self.name))
         dot_file.write('labelloc=t;')
         dot_file.write('graph [fontname="Verdana" compound=true rankdir=LR];')
         dot_file.write('node [shape=record fontname="Verdana"];')
-        dot_file.write('}')  # End
+        dot_file.write('subgraph cluster_0 {')  # Begin cluster rows
+        dot_file.write('node [style=filled];')
+        dot_file.write('label="Filas";')
+        dot_file.write('color=blue;')
+
+        row_count = 0
+        while row_count < self.n:
+            dot_file.write('f{} [label="Fila {}"];'.format(
+                row_count, row_count + 1))
+            row_count = row_count + 1
+
+        dot_file.write('}')  # End cluster rows
+
+        count_x = 0
+        while count_x < self.m:
+            count_y = 0
+            while count_y < self.n:
+                dot_file.write('e{x}_{y} [label="{x},{y} | {value}"];'.format(
+                    x=count_x, y=count_y, value=self.get(count_x, count_y)))
+                count_y = count_y + 1
+            count_x = count_x + 1
+
+        count_y = 0
+        while count_y < self.n:
+            dot_file.write('f{y} -> e0_{y};'.format(y=count_y))
+            count_x = 0
+            while count_x < self.m:
+                if not count_x + 1 >= self.m:
+                    dot_file.write('e{}_{} -> e{}_{};'.format(
+                        count_x, count_y, count_x + 1, count_y))
+                count_x = count_x + 1
+            count_y = count_y + 1
+
+        dot_file.write('}')  # End file
         dot_file.close()
 
-        output_filename = '{}{}_{}{}{}_graph_{}.svg'.format(
+        output_filename = '{}{}{}_{}{}{}_graph_{}.svg'.format(
+            datetime.now().second,
             datetime.now().minute,
             datetime.now().hour,
             datetime.now().day,
