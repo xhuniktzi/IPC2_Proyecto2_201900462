@@ -134,3 +134,5 @@ dmypy.json
 
 *.dot
 *.svg
+
+.vscode/
